@@ -1,0 +1,33 @@
+<!-- quiz/templates/index.html -->
+<html>
+
+<head>
+    <title>Quiz SWOI</title>
+</head>
+
+<body>
+    <h1>Which Estimator should I choose</h1>
+
+    <p>
+
+        <form method="POST">
+            {% for entry in questions %}
+            <p>
+                {{ entry.question }}
+                <br>
+                {% set question_number = loop.index0 %}
+                {% for answer in entry.answers %}
+                <label>
+
+<input type="radio" value="{{ answer }}" name="{{ question_number }}">
+                    {{ answer }}
+                </label>
+                <br> {% endfor %}
+            </p>
+            {% endfor %}
+
+            <button type="submit">Find Estimator</button>
+        </form>
+</body>
+
+</html>
