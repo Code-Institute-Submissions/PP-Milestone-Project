@@ -1,3 +1,6 @@
+from tests import *
+
+
 ## Assign specific estimators to the given scores
 
 def estimate_score(score):
@@ -27,3 +30,21 @@ def estimate_score(score):
     else:
         result = ["Please answer all the questions"]
     return result    
+    
+    
+test_are_equal(estimate_score(21111),estimate_score(22111))
+test_are_equal(estimate_score(31211),estimate_score(32221))
+
+test_not_equal(estimate_score(31211),estimate_score(31111))
+test_not_equal(estimate_score(21112),estimate_score(21212))
+test_not_equal(estimate_score(12212),estimate_score(12112))
+test_not_equal(estimate_score(11111),estimate_score(32121))
+
+
+test_are_equal(estimate_score(31211),["Isomap", "Spectral Embedding"])
+test_are_equal(estimate_score(0),["Please answer all the questions"])
+test_are_equal(estimate_score(11),["Please answer all the questions"])
+test_are_equal(estimate_score(111),["Please answer all the questions"])
+test_are_equal(estimate_score(1111),["Please answer all the questions"])
+
+print("All tests pass!")    
