@@ -6,17 +6,35 @@ from flask_wtf import FlaskForm                                                 
 from wtforms import StringField, PasswordField, BooleanField                                ## checkboxes & fields
 from wtforms.validators import InputRequired, Email, Length
 from werkzeug.security import generate_password_hash, check_password_hash                   ## for hiding passowrds in the file
-from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from flask_login import LoginManager,login_user, login_required, logout_user, current_user, UserMixin
 from estimate import estimate_score                                                         ## Assign specific estimators to the given scores
+from flask_sqlalchemy import SQLAlchemy
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'BiggestSecret'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 Bootstrap(app)
+db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+
+
+## Create database for Users
+
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(15), unique=True)
+    email = db.Column(db.String(50), unique=True)
+    password = db.Column(db.String(80))
+    
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+    
+    
 
 ## Survey questions:
 
@@ -60,12 +78,7 @@ class RegisterForm(FlaskForm):
     username = StringField('username', validators=[InputRequired(), Length(min=3, max=15)])
     password = PasswordField('password', validators=[InputRequired(), Length(min=6, max=80)])
     
-## Handle the process of writing data to a file  
 
-def write_to_file(filename, data):    
-    with open(filename, "a") as file:
-        file.writelines(data)
-    
 
 ## ROUTES - INDEX (Start Page):
 
@@ -79,11 +92,11 @@ def index():
 @app.route('/signup', methods=["GET", "POST"])
 def signup():
     form = RegisterForm()
-    hashed_password = generate_password_hash(form.password.data, method='sha256')
+    hashed_password = generate_password_hash(form.password.data, method='sha256')           ## password get hashed for security purposes
     if form.validate_on_submit(): 
-        write_to_file("data/signup.txt", "Username: " + form.username.data + "\t" + 
-                      " | Email: " + form.email.data + "\t" + 
-                      " | Password: " + hashed_password + "\n")
+        new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
         return redirect(url_for('login'))
  
     return render_template('signup.html', form=form)                            ## passing signup form to signup template    
@@ -96,8 +109,13 @@ def login():
     form = LoginForm()
     
     if form.validate_on_submit():                                               ## if form was submitted....
-        write_to_file("data/login.txt",datetime.now().strftime("%H:%M:%S") + "\t" + form.username.data + "\n")
-        return redirect(url_for('dashboard'))
+        user = User.query.filter_by(username=form.username.data).first()
+        if user:
+            if check_password_hash(user.password, form.password.data):
+                login_user(user, remember=form.remember.data)
+                return redirect(url_for('dashboard'))
+        
+        return '<h1>Invalid username or password</h1>'         
     
     return render_template('login.html', form=form)                             ## passing login form to login template
 
@@ -106,6 +124,7 @@ def login():
 ## ROUTES - DASHBOARD (Survey Form):
 
 @app.route('/dashboard', methods=['GET', 'POST'])
+@login_required
 def dashboard():
     
     if request.method == 'POST':
@@ -158,6 +177,13 @@ def dashboard():
 def results():
     return render_template('dashboard.html')
 
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+    
 
 
 ## Initiate app
