@@ -12,7 +12,8 @@ Goal of the project is to create survey, that will help to decide which ML algor
 
 ## Project Requirements:
 1.	Application must enter their answers & submit it using form.
-2.	Users have to be identifiable by unique username/password (mockup signup + login system with info stored in txt files)
+2.	~~Users have to be identifiable by unique username/password (mockup signup + login system with info stored in txt files)~~
+2.	Users have to be identifiable by unique username/password (SqlAlchemy database has been implemented)
 3.	App must be written in Python. HTML, CSS, and JavaScript
 4.	App should be built with TDD approach
 5.	Flask framework should be used 
