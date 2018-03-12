@@ -1,0 +1,75 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}
+ML Library
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+    <link rel="stylesheet" href="{{url_for('.static', filename='custom-styles.css')}}">
+    <!-- Material Icons-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Materialize-->
+    <link rel="stylesheet" href="static/materialize/css/materialize.min.css" media="screen,projection" />
+    <!-- Bootstrap-->
+    <link href="static/bootstrap.css" rel="stylesheet" />
+    <!-- FontAwesome Styles-->
+    <link href="static/font-awesome.css" rel="stylesheet" />
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+    <!-- Custom Styles-->
+    <link href="static/custom-styles.css" rel="stylesheet" />
+    <!-- Google Fonts-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+{% endblock %}
+
+{% block content %}
+    <!-- WRAPPER -->
+    <div id="wrapper">
+
+        <!-- TOP NAVBAR -->
+        <nav class="navbar navbar-default top-navbar" role="navigation">
+            <div class="navbar-header">
+                <a class="navbar-brand waves-effect waves-dark" href=""><i class="large material-icons">blur_on</i><strong>ML Selector</strong></a>
+
+            </div>
+
+            <ul class="nav navbar-top-links navbar-right">
+                <li><a class="dropdown-button waves-effect waves-dark" href="{{ url_for('signup') }}"><i class="fas fa-tasks" id="top_icon"></i> <b>Sign In</b></a></li>
+                <!--<li><a class="dropdown-button waves-effect waves-dark" href="{{ url_for('login') }}"><i class="fa fa-user fa-fw" id="top_icon"></i> <b>Log In</b></a></li>-->
+            </ul>
+        </nav>
+
+        <!--/. TOP NAVBAR ****************************************************************************************************************************************************************************************** -->
+        
+        <!-- PAGE-WRAPPER -->
+        <div id="page-wrapper">
+
+            <!-- PAGE-INDEX -->
+            <div class="container">
+              
+                <div class="dashboard-cards">
+                        <div class="col-md-12 text-center">
+                          <div class="card" id="info_content">
+                              <h1>Please Sign In to start working with ML Selector</h1>
+                          </div>
+                    </div>
+                </div>
+            </div>
+            <!-- PAGE-INDEX -->
+
+        </div>
+        <!-- PAGE-WRAPPER -->
+
+    </div>
+    <!-- WRAPPER -->
+
+
+    <!-- Bootstrap Js -->
+    <script src="static/js/bootstrap.min.js"></script>
+
+    <!-- Materialize Js -->
+    <script src="static/materialize/js/materialize.min.js"></script>
+
+{% endblock %}
