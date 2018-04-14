@@ -1,5 +1,8 @@
 # ML Selector Project
 
+## Heroku:
+https://mlselector.herokuapp.com/
+
 ## Project Case:
 
 How do I know which method of parameter estimation to choose? <br>
@@ -12,7 +15,7 @@ Goal of the project is to create survey, that will help to decide which ML algor
 
 ## Project Requirements:
 1.	Application must enter their answers & submit it using form.
-2.	~~Users have to be identifiable by unique username/password (mockup signup + login system with info stored in txt files)~~
+2.	Suggested algorithms and descriptions(instead of q & a) are stored and accessible (MongoDB)
 2.	Users have to be identifiable by unique username/password (SqlAlchemy database has been implemented)
 3.	App must be written in Python. HTML, CSS, and JavaScript
 4.	App should be built with TDD approach
@@ -36,16 +39,16 @@ Goal of the project is to create survey, that will help to decide which ML algor
 ### Estimate.py
 1. Standard assertion tests within file 
 
-### Survey:
-1. Are survey questions properly displayed
-2. Is survey url properly routing to results page
+### Data-Questions:
+1. Are data questions properly displayed
 
 ### Results:
 1. Are estimator field properly displayed
-2. Is results url properly routing back to dashboard 
+
+### Add suggestion
+1. Testing various inputs and datatable functionality
 
 ### App Responsivity: 
-
 1. Done with Inspect element tool as a last part of the test suite
 
 
@@ -82,6 +85,12 @@ https://fonts.google.com/specimen/Roboto?selection.family=Roboto
 
 JS:<br>
 https://www.w3schools.com/js/
+
+SQLite<br>
+https://www.sqlite.org/index.html
+
+MongoDB mLab<br>
+https://mlab.com
 
 ## scikit-learn source
 
