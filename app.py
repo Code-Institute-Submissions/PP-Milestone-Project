@@ -14,11 +14,16 @@ from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 
 
+############################################################################ App Foundations #################################################################################################################################
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'BiggestSecret'
+## For User Credentials:
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+## For Suggested Questions:
 app.config["MONGO_DBNAME"] = 'q_and_a'
 app.config["MONGO_URI"] = 'mongodb://practicepython:codeinstitute@ds227035.mlab.com:27035/q_and_a'
+
 Bootstrap(app)
 db = SQLAlchemy(app)
 mongo = PyMongo(app)
@@ -65,7 +70,9 @@ class RegisterForm(FlaskForm):
     
 
 
-## ROUTES - DASHBOARD (Survey Form):
+############################################################################ ML Selector #################################################################################################################################
+
+## ROUTES - DASHBOARD:
 
 @app.route('/')
 @app.route('/dashboard', methods=['GET', 'POST'])
@@ -116,12 +123,18 @@ def dashboard():
     return render_template('dashboard.html', questions=questions, result = result, user = current_user.username, message = message)    
 
 
+####################################################################### Adding algorithms ################################################################################################################################
+
+
+## ROUTES - Suggest Algorithm:
+
 @app.route('/add_algorithm')
 def add_algorithm():
     suggested_algorithms = mongo.db.suggested_algorithms.find()
     return render_template('add_request.html', suggested_algorithms = suggested_algorithms, user = current_user.username)
 
 
+## ROUTES - Save Algorithm:
 
 @app.route('/insert_algorithm', methods=['POST'])
 def insert_algorithm():
@@ -129,15 +142,24 @@ def insert_algorithm():
     suggested_algorithms.insert_one(request.form.to_dict())
     return redirect(url_for('add_algorithm'))
     
+## ROUTES - Delete Algorithm:    
     
 @app.route('/delete_algorithm/<algorithm_id>')
 def delete_algorithm(algorithm_id):
     mongo.db.suggested_algorithms.remove({'_id': ObjectId(algorithm_id)})
     return redirect(url_for('add_algorithm'))    
+    
+    
+## ROUTES - SciKit Map:      
 
 @app.route('/fullmap')
 def full_map():
     return render_template('map.html', user = current_user.username)
+
+
+##################################################################### User Handling ######################################################################################################################################
+
+
 
 ## ROUTES - SIGNUP:
 
