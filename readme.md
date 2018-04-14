@@ -27,10 +27,10 @@ Goal of the project is to create survey, that will help to decide which ML algor
 ## Test Suite:
 
 ### Login/Signin Form Test:
-1. Is data properly saved in signup.txt & login.txt files
+1. Is data properly saved in database
 2. Are different templates properly routing to signup and login urls
 3. Are form fields values properly validated (example: email field)
-4. Is password properly hashed in a signup file
+4. Is password properly hashed
 
 ### Score assigner:
 1. Is correct score assign to certain answer
