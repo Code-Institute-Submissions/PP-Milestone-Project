@@ -11,7 +11,7 @@ from estimate import estimate_score                                             
 from flask_sqlalchemy import SQLAlchemy
 
 from flask_pymongo import PyMongo
-from bson.objectid import ObjectId
+
 
 
 app = Flask(__name__)
@@ -65,14 +65,15 @@ class RegisterForm(FlaskForm):
     
 
 
+
+
 ## ROUTES - DASHBOARD (Survey Form):
 
 @app.route('/')
 @app.route('/dashboard', methods=['GET', 'POST'])
+@login_required
 def dashboard():
     questions=mongo.db.Questions.find()
-    result = []
-    message = 'Please answer all the questions'
     if request.method == 'POST':
         score = 0 
         answers = request.form 
@@ -107,38 +108,25 @@ def dashboard():
 
 ## Assign specific estimators to the given scores:
         result = estimate_score(score) 
-        message = 'Suggested Machine Learning algortihms are:' 
+
 ## Pass each estimator as flash message:        
         for element in result:
             flash(element)
-           
-        
-    return render_template('dashboard.html', questions=questions, result = result, user = current_user.username, message = message)    
 
+        return render_template('results.html')
 
-@app.route('/add_algorithm')
-def add_algorithm():
-    suggested_algorithms = mongo.db.suggested_algorithms.find()
-    return render_template('add_request.html', suggested_algorithms = suggested_algorithms, user = current_user.username)
-
-
-
-@app.route('/insert_algorithm', methods=['POST'])
-def insert_algorithm():
-    suggested_algorithms =  mongo.db.suggested_algorithms
-    suggested_algorithms.insert_one(request.form.to_dict())
-    return redirect(url_for('add_algorithm'))
+    return render_template('dashboard.html', questions=questions)    
     
+## To get back to survey from results page:
+
+@app.route('/results', methods=['GET', 'POST'])
+def results():
+    return render_template('dashboard.html')
+
+
     
-@app.route('/delete_algorithm/<algorithm_id>')
-def delete_algorithm(algorithm_id):
-    mongo.db.suggested_algorithms.remove({'_id': ObjectId(algorithm_id)})
-    return redirect(url_for('add_algorithm'))    
-
-@app.route('/fullmap')
-def full_map():
-    return render_template('map.html', user = current_user.username)
-
+       
+    
 ## ROUTES - SIGNUP:
 
 @app.route('/signup', methods=["GET", "POST"])

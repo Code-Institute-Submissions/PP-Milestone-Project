@@ -6,22 +6,16 @@ from flask_wtf import FlaskForm                                                 
 from wtforms import StringField, PasswordField, BooleanField                                ## checkboxes & fields
 from wtforms.validators import InputRequired, Email, Length
 from werkzeug.security import generate_password_hash, check_password_hash                   ## for hiding passowrds in the file
-from flask_login import LoginManager,login_user, login_required, logout_user, current_user, UserMixin, AnonymousUserMixin
+from flask_login import LoginManager,login_user, login_required, logout_user, current_user, UserMixin
 from estimate import estimate_score                                                         ## Assign specific estimators to the given scores
 from flask_sqlalchemy import SQLAlchemy
-
-from flask_pymongo import PyMongo
-from bson.objectid import ObjectId
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'BiggestSecret'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-app.config["MONGO_DBNAME"] = 'q_and_a'
-app.config["MONGO_URI"] = 'mongodb://practicepython:codeinstitute@ds227035.mlab.com:27035/q_and_a'
 Bootstrap(app)
 db = SQLAlchemy(app)
-mongo = PyMongo(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
@@ -47,7 +41,37 @@ class Anonymous(AnonymousUserMixin):
     self.username = 'Guest'
     
     
-login_manager.anonymous_user = Anonymous
+login_manager.anonymous_user = Anonymous    
+    
+    
+
+## Survey questions:
+
+Survey = [
+{
+'question': 'Type of prediction:',
+'answers': ['Category', 'Quantity', 'Just looking'], 
+},
+{
+
+'question': 'Dataset is:', 
+'answers': ['Labelled', 'Not labelled'], 
+},
+{
+'question': 'Size of a dataset:', 
+'answers': ['Less than 100K samples', 'More than 100K samples'], 
+},
+{
+'question': 'Amount of categories known:', 
+'answers': ['Yes', 'No'], 
+},
+{
+'question': 'Data type:', 
+'answers': ['Text data', 'Other'],
+},
+
+]
+
     
 ## Login Form
 
@@ -65,79 +89,12 @@ class RegisterForm(FlaskForm):
     
 
 
-## ROUTES - DASHBOARD (Survey Form):
+## ROUTES - INDEX (Start Page):
 
 @app.route('/')
-@app.route('/dashboard', methods=['GET', 'POST'])
-def dashboard():
-    questions=mongo.db.Questions.find()
-    result = []
-    message = 'Please answer all the questions'
-    if request.method == 'POST':
-        score = 0 
-        answers = request.form 
+def index():
+    return render_template('index.html')
 
-## Assign score to the given asnwer:        
-        for question, user_answer in answers.items():
-            if user_answer == 'Category': 
-                score += 10000
-            elif  user_answer == 'Quantity':
-                score += 20000
-            elif  user_answer == 'Just looking':
-                score += 30000    
-            elif user_answer == 'Labelled': 
-                score += 1000 
-            elif  user_answer == 'Not labelled':
-                score += 2000    
-            elif  user_answer == 'Less than 100K samples':
-                score += 100
-            elif  user_answer == 'More than 100K samples':
-                score += 200   
-            elif user_answer == 'Known': 
-                score += 10 
-            elif  user_answer == 'No idea':
-                score += 20
-            elif user_answer == 'Text data': 
-                score += 1
-            elif  user_answer == 'Other':
-                score += 2
-            else: 
-                score += 0
-
-
-## Assign specific estimators to the given scores:
-        result = estimate_score(score) 
-        message = 'Suggested Machine Learning algortihms are:' 
-## Pass each estimator as flash message:        
-        for element in result:
-            flash(element)
-           
-        
-    return render_template('dashboard.html', questions=questions, result = result, user = current_user.username, message = message)    
-
-
-@app.route('/add_algorithm')
-def add_algorithm():
-    suggested_algorithms = mongo.db.suggested_algorithms.find()
-    return render_template('add_request.html', suggested_algorithms = suggested_algorithms, user = current_user.username)
-
-
-
-@app.route('/insert_algorithm', methods=['POST'])
-def insert_algorithm():
-    suggested_algorithms =  mongo.db.suggested_algorithms
-    suggested_algorithms.insert_one(request.form.to_dict())
-    return redirect(url_for('add_algorithm'))
-    
-    
-@app.route('/delete_algorithm/<algorithm_id>')
-def delete_algorithm(algorithm_id):
-    mongo.db.suggested_algorithms.remove({'_id': ObjectId(algorithm_id)})
-    return redirect(url_for('add_algorithm'))    
-
-@app.route('/fullmap')
-def full_map():
-    return render_template('map.html', user = current_user.username)
 
 ## ROUTES - SIGNUP:
 
@@ -172,6 +129,64 @@ def login():
     return render_template('login.html', form=form)                             ## passing login form to login template
 
 
+
+## ROUTES - DASHBOARD (Survey Form):
+
+@app.route('/dashboard', methods=['GET', 'POST'])
+@login_required
+def dashboard():
+    
+    if request.method == 'POST':
+        score = 0 
+        answers = request.form 
+
+## Assign score to the given asnwer:        
+        for question, user_answer in answers.items():
+            if user_answer == 'Category': 
+                score += 10000
+            elif  user_answer == 'Quantity':
+                score += 20000
+            elif  user_answer == 'Just looking':
+                score += 30000    
+            elif user_answer == 'Labelled': 
+                score += 1000 
+            elif  user_answer == 'Not labelled':
+                score += 2000    
+            elif  user_answer == 'Less than 100K samples':
+                score += 100
+            elif  user_answer == 'More than 100K samples':
+                score += 200   
+            elif user_answer == 'Yes': 
+                score += 10 
+            elif  user_answer == 'No':
+                score += 20
+            elif user_answer == 'Text data': 
+                score += 1
+            elif  user_answer == 'Other':
+                score += 2
+            else: 
+                score += 0
+
+
+## Assign specific estimators to the given scores:
+        result = estimate_score(score) 
+
+## Pass each estimator as flash message:        
+        for element in result:
+            flash(element)
+
+        return render_template('results.html')
+
+    return render_template('dashboard.html', questions=Survey)    
+    
+## To get back to survey from results page:
+
+@app.route('/results', methods=['GET', 'POST'])
+
+def results():
+    return render_template('dashboard.html')
+
+
 @app.route('/logout')
 @login_required
 def logout():
@@ -185,4 +200,7 @@ def logout():
 if __name__ == '__main__':
     app.run(host=os.environ.get('IP'),
             port=int(os.environ.get('PORT')),
-debug=True)
+            debug=True)
+            
+            
+            

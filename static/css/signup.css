@@ -1,22 +1,22 @@
 body {
   padding-top: 60px;
   padding-bottom: 60px;
-  background: #062324;
+  background-image: url('../../static/img/background.jpg');
 }
 
 .form-signin {
   max-width: 330px;
   padding: 15px;
   margin: 0 auto;
-  background-color: #232a27;
+  background-color: #2a333c;
   border-style: outset;
-  border-color: #D9B08C;
-  border-radius: 25px;
-  color: #D9B08C;
+  border-color: #2b4056;
+  border-radius: 15px;
+  color: white;
 }
 
 .form-signin .form-signin-heading {
-  color: #D9B08C;
+  color: white;
 }
 
 .form-signin .checkbox {
@@ -55,7 +55,7 @@ body {
 
 .btn {
   color: white;
-  background-color: #008080;
+  background-color: #2b4056;
   border-radius: 20px;
   border: none;
   display: block;
@@ -64,7 +64,15 @@ body {
   line-height: 25px;
 }
 
-.btn:hover, .btn:focus {
-  background-color: #0E5254;
+.btn:hover,
+.btn:focus {
+  background-color: white;
+  color: #2b4056;
+}
+
+
+.form-signin .form-control {
+  background-color: #1a2026;
+  border-color: #222931;
   color: white;
 }

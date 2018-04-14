@@ -28,7 +28,7 @@ def estimate_score(score):
     elif score in (31211, 31212,  31222,  31221,  32211,  32212,  32222,  32221):
         result = ["Isomap", "Spectral Embedding"]
     else:
-        result = ["Please answer all the questions"]
+        result = ["Not all the questions were answered"]
     return result    
     
     
@@ -42,9 +42,9 @@ test_not_equal(estimate_score(11111),estimate_score(32121))
 
 
 test_are_equal(estimate_score(31211),["Isomap", "Spectral Embedding"])
-test_are_equal(estimate_score(0),["Please answer all the questions"])
-test_are_equal(estimate_score(11),["Please answer all the questions"])
-test_are_equal(estimate_score(111),["Please answer all the questions"])
-test_are_equal(estimate_score(1111),["Please answer all the questions"])
+test_are_equal(estimate_score(0),["Not all the questions were answered"])
+test_are_equal(estimate_score(11),["Not all the questions were answered"])
+test_are_equal(estimate_score(111),["Not all the questions were answered"])
+test_are_equal(estimate_score(1111),["Not all the questions were answered"])
 
-print("All tests pass!")    
+print("Starting App")    
