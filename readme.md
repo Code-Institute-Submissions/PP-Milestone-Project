@@ -34,7 +34,7 @@ Goal of the project is to create survey, that will help to decide which ML algor
 
 ### Score assigner:
 1. Is correct score assign to certain answer
-2. If no answer is marked then survey result should be "Please answer all the questions"
+2. If no answer is marked then survey result should be "Not all the questions were answered"
 
 ### Estimate.py
 1. Standard assertion tests within file 
