@@ -32,6 +32,15 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 
+# ## Test config
+# class TestConfig():
+#     DEBUG = True
+#     TESTING = True
+#     WTF_CSRF_ENABLED = False
+#     SECRET_KEY = 'BiggestSecret'
+#     SQLALCHEMY_DATABASE_URI = 'sqlite:///testdatabase.db'
+
+
 
 ## Create database for Users
 

@@ -26,7 +26,7 @@
                             <h2>{{ entry.question }}</h2>
                             <br> {% set question_number = loop.index0 %} {% for answer in entry.answers %}
                             <h4>
-                                <input type="radio" value="{{ answer }}" name="{{ question_number }}"> {{ answer }}
+                                <input type="radio" value="{{ answer }}" name="{{ question_number }}" required> {{ answer }}
                             </h4>
                             <br> {% endfor %}
                         </div>

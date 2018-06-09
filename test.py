@@ -1,6 +1,6 @@
-from app import app
+from app import app, User
 import unittest
-
+from flask_login import current_user
 
 
 class FlaskTestCase(unittest.TestCase):
@@ -21,12 +21,21 @@ class FlaskTestCase(unittest.TestCase):
         
         
     # Login works correctly given correct credentials
+    
+    def test_correct_signup(self):
+        tester = app.test_client(self)
+        response = tester.post('/signup', data=dict(username="admin", 
+                                                    email="admin@gmail.com", 
+                                                    password="adminadmin"), 
+                                                    follow_redirects = True)
+        self.assertTrue(b'sign' in response.data)     
+        
     def test_correct_login(self):
         tester = app.test_client(self)
         response = tester.post('/login', data=dict(username="admin", password="adminadmin"), 
                                             follow_redirects = True)
-        self.assertTrue(b'Please Log in' in response.data)                                    
-      
+        self.assertTrue(b'Please Log in' in response.data)     
+
     # Login works correctly given incorrect credentials    
     def test_incorrect_login(self):
         tester = app.test_client(self)
@@ -49,12 +58,13 @@ class FlaskTestCase(unittest.TestCase):
         response = tester.get('/logout', follow_redirects = True)
         self.assertTrue(b'Please Log in' in response.data)    
         
-    # Ensure that title shows on main page
+    # Ensure that title & default user shows on main page
     def test_title_shows_up(self):
         tester = app.test_client(self)
-        response = tester.post('/dashboard', data=dict(username="admin", password="adminadmin"), 
-                                            follow_redirects = True)
-        self.assertTrue(b'CHARACTERISE YOUR DATASET' in response.data)    
+        response = tester.get('/dashboard')
+        self.assertTrue(b'CHARACTERISE YOUR DATASET' in response.data)
+        self.assertTrue(b'Guest' in response.data)
+        self.assertEqual(response.status_code, 200)
     
         
 if __name__ == '__main__':

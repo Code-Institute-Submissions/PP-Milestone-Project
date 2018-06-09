@@ -1,4 +1,4 @@
-from tests import *
+from tests_score import *
 
 
 ## Assign specific estimators to the given scores
