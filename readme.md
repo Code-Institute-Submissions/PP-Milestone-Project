@@ -26,6 +26,15 @@ Goal of the project is to create survey, that will help to decide which ML algor
 
 ## Test Suite:
 
+### Test Files
+
+#### test.py
+Views unit tests
+
+#### test_score.py
+Estimator algorithm test
+
+
 ### Login/Signin Form Test:
 1. Is data properly saved in database
 2. Are different templates properly routing to signup and login urls
