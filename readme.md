@@ -26,6 +26,9 @@ Goal of the project is to create survey, that will help to decide which ML algor
 
 ## Test Suite:
 
+### Travis CI
+[![Build Status](https://travis-ci.org/LukaszMalucha/PP-Milestone-Project.svg?branch=master)](https://travis-ci.org/LukaszMalucha/PP-Milestone-Project)
+
 ### Test Files
 
 #### test.py
