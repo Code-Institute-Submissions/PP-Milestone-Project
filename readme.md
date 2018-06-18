@@ -37,6 +37,7 @@ Views unit tests
 #### test_score.py
 Estimator algorithm test
 
+### Manual Tests:
 
 ### Login/Signin Form Test:
 1. Is data properly saved in database
