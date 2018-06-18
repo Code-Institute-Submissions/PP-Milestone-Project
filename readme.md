@@ -1,19 +1,19 @@
 # ML Selector Project
 
-## Heroku:
+### Link:
 https://mlselector.herokuapp.com/
 
-## Project Case:
+## PROJECT CASE:
 
 How do I know which method of parameter estimation to choose? <br>
 
 It's hard to decide if you have so many different algorithms to your disposal. But with certain information given about analysed dataset, we can narrow that choice to few best matches.
 
 
-## Goal Statement:
+## GOAL STATEMENT:
 Goal of the project is to create survey, that will help to decide which ML algorithm is the most suitable one for a given task.
 
-## Project Requirements:
+## PROJECT REQUIREMENTS:
 1.	Application must enter their answers & submit it using form.
 2.	Suggested algorithms and descriptions(instead of q & a) are stored and accessible (MongoDB)
 2.	Users have to be identifiable by unique username/password (SqlAlchemy database has been implemented)
@@ -23,7 +23,32 @@ Goal of the project is to create survey, that will help to decide which ML algor
 6.	App should be responsive
 7.	Apply Responsive Design
 
+## APP STRUCTURE
 
+#### Main Dashboard View:
+
+![mls1](https://user-images.githubusercontent.com/26208598/41541629-d5c90be8-730a-11e8-8a9b-6c5584919855.JPG)
+
+1. Dataset Form - requires User input in order to match ML estimator
+
+2. Match Estimator Button - press to process a form
+
+3. Login/Registry Menu - shows "Guest" when user is not logged in.
+
+4. ML Library Button - link to 
+
+5. Suggest Button - brings User to "Add Algorithm" menu
+
+6. Scikit Map Button - brings full map of ML Estimators
+
+
+#### Add Algorithm View:
+
+![mls2](https://user-images.githubusercontent.com/26208598/41541630-d6e515d0-730a-11e8-9269-42f598dc0149.JPG)
+
+1. Add Algorithm Card - User can suggest new algorithm for ML Estimator
+
+2. User Suggestions Table - Table of current ML Estimator proposals 
 ## Test Suite:
 
 ### Travis CI
