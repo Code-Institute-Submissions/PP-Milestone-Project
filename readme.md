@@ -134,6 +134,15 @@ https://mlab.com
 
 http://scikit-learn.org/stable/tutorial/machine_learning_map/index.html
 
+## CREDITS & INSPIRATIONS
+
+#### Error 404 template:
+
+Robin Selmer:
+
+https://codepen.io/robinselmer/pen/vJjbOZ
+
+
 
 Thank you,
 
